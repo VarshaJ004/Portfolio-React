@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, FileText, Mail, Award, ExternalLink, Terminal } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Mail, Award, ExternalLink, Terminal } from 'lucide-react';
 import Navbar from './components/Navbar';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
@@ -8,7 +8,7 @@ import Preloader from './components/Preloader';
 import MagneticButton from './components/MagneticButton';
 import { portfolioData } from './data/portfolioData';
 
-// Interactive Card with Dynamic Border Spotlight
+// Interactive Card with Dynamic Border Spotlight & Scroll Fade-In
 const PremiumCard = ({ children, className = "" }) => {
   const cardRef = useRef(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -45,14 +45,13 @@ const PremiumCard = ({ children, className = "" }) => {
         y.set(0);
       }}
       style={{ rotateY, rotateX, transformStyle: "preserve-3d" }}
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
       whileHover={{ scale: 1.01 }}
       className={`relative premium-card p-8 sm:p-10 rounded-3xl overflow-hidden group ${className}`}
     >
-      {/* Dynamic Cursor Spotlight Effect */}
       <div
         className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
         style={{
@@ -68,14 +67,13 @@ const PremiumCard = ({ children, className = "" }) => {
   );
 };
 
-// Variable Typography Title styled exact to screenshot
+// Studio Typography Title
 const StudioTitle = ({ firstName = "VARSHA", lastName = "JOHNSON" }) => {
   const firstLetters = firstName.split("");
   const lastLetters = lastName.split("");
 
   return (
     <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-6 my-8 select-none cursor-pointer group">
-      {/* First Name - Ultra Thin Tall Condensed */}
       <div className="flex tracking-wider">
         {firstLetters.map((char, index) => (
           <motion.span
@@ -83,14 +81,12 @@ const StudioTitle = ({ firstName = "VARSHA", lastName = "JOHNSON" }) => {
             whileHover={{ scale: 1.2, color: "#ffffff", y: -6 }}
             transition={{ type: "spring", stiffness: 300, damping: 15 }}
             className="text-4xl sm:text-7xl md:text-8xl font-thin tracking-[0.2em] text-gray-300 uppercase inline-block transition-colors duration-200"
-            style={{ fontStretch: "condensed" }}
           >
             {char}
           </motion.span>
         ))}
       </div>
 
-      {/* Last Name - Bold Heavy Impact */}
       <div className="flex tracking-tight">
         {lastLetters.map((char, index) => (
           <motion.span
@@ -108,7 +104,8 @@ const StudioTitle = ({ firstName = "VARSHA", lastName = "JOHNSON" }) => {
 };
 
 export default function App() {
-  const duplicatedSkills = [...portfolioData.skills, ...portfolioData.skills];
+  // Duplicate skills array to ensure seamless infinite looping
+  const duplicatedSkills = [...portfolioData.skills, ...portfolioData.skills, ...portfolioData.skills, ...portfolioData.skills];
 
   return (
     <>
@@ -119,36 +116,30 @@ export default function App() {
       <div className="min-h-screen bg-[#030304] text-white relative overflow-hidden">
         <Navbar />
 
-        {/* Animated mesh background (replaces static spotlight, persists behind all sections) */}
+        {/* --- DYNAMIC LIVE MOVING BACKGROUND --- */}
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-          <div className="absolute top-[-10%] left-[10%] w-[500px] h-[500px] bg-white/[0.04] rounded-full blur-[120px] animate-blob" />
-          <div className="absolute bottom-[-10%] right-[10%] w-[600px] h-[600px] bg-white/[0.03] rounded-full blur-[130px] animate-blob-delay" />
-          <div className="absolute inset-0 grid-overlay opacity-40" />
-        </div>
-
-        {/* Studio Top Spotlights matching screenshot reference */}
-        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] opacity-60 z-[1]">
-          <div className="absolute top-[-100px] left-[20%] w-[300px] h-[600px] bg-gradient-to-b from-white/20 via-white/5 to-transparent blur-[80px] rotate-[25deg]" />
-          <div className="absolute top-[-100px] right-[20%] w-[300px] h-[600px] bg-gradient-to-b from-white/20 via-white/5 to-transparent blur-[80px] -rotate-[25deg]" />
+          {/* Top Left Moving Glow */}
+          <div className="absolute top-[5%] left-[10%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[140px] animate-blob-1" />
+          {/* Bottom Right Moving Glow */}
+          <div className="absolute bottom-[10%] right-[10%] w-[600px] h-[600px] bg-blue-600/15 rounded-full blur-[160px] animate-blob-2" />
+          {/* Grid Texture */}
+          <div className="absolute inset-0 grid-overlay opacity-30" />
         </div>
 
         {/* Hero Section */}
         <section id="home" className="relative min-h-screen flex flex-col items-center justify-center pt-32 px-4 text-center overflow-hidden z-10">
           <div className="max-w-5xl">
-            {/* Main Title matching Screenshot */}
             <StudioTitle firstName="VARSHA" lastName="JOHNSON" />
 
-            {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
               className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto font-light leading-relaxed mb-10 tracking-wide"
             >
               {portfolioData.summary}
             </motion.p>
 
-            {/* Buttons styled exact to reference, now magnetic */}
             <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
               <MagneticButton
                 href="#projects"
@@ -163,41 +154,6 @@ export default function App() {
               >
                 Contact Me
               </MagneticButton>
-            </div>
-
-            {/* Social Icons */}
-            <div className="flex justify-center items-center gap-6 text-gray-400">
-              <motion.a
-                whileHover={{ scale: 1.2, color: "#ffffff" }}
-                href={portfolioData.github}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub"
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
-              </motion.a>
-
-              <motion.a
-                whileHover={{ scale: 1.2, color: "#ffffff" }}
-                href={portfolioData.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </motion.a>
-
-              <motion.a
-                whileHover={{ scale: 1.2, color: "#ffffff" }}
-                href={`mailto:${portfolioData.email}`}
-                aria-label="Email"
-              >
-                <Mail size={20} />
-              </motion.a>
             </div>
           </div>
         </section>
@@ -214,7 +170,7 @@ export default function App() {
             {portfolioData.hobbyWebsite && (
               <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between flex-wrap gap-2">
                 <span className="text-xs text-gray-400 font-mono">Personal Writing & Novel Showcase</span>
-                
+                <a
                   href={portfolioData.hobbyWebsite}
                   target="_blank"
                   rel="noreferrer"
@@ -227,48 +183,33 @@ export default function App() {
           </PremiumCard>
         </section>
 
-        {/* Stats Bar */}
-        <section className="max-w-4xl mx-auto px-4 pb-12 z-10 relative">
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: 'Tech Skills', value: portfolioData.skills.length },
-              { label: 'Certifications', value: portfolioData.certifications.length },
-              { label: 'Projects', value: portfolioData.projects.length },
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="premium-card rounded-2xl py-6 text-center"
-              >
-                <div className="text-3xl font-extrabold text-white text-gradient-shimmer">{stat.value}+</div>
-                <div className="text-xs text-gray-400 font-mono uppercase tracking-widest mt-1">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* Moving Skills Marquee */}
+        {/* --- INFINITE MOVING SKILLS MARQUEE (FRAMER MOTION) --- */}
         <section id="skills" className="py-20 relative overflow-hidden z-10">
           <div className="text-center mb-12">
             <span className="text-xs font-mono uppercase tracking-widest text-gray-400 border border-white/10 px-5 py-2 rounded-full bg-white/5">
               Technical Stack
             </span>
           </div>
-          <div className="flex overflow-hidden w-full select-none py-4">
-            <div className="flex gap-6 animate-marquee whitespace-nowrap">
+
+          <div className="flex w-full overflow-hidden select-none py-4">
+            <motion.div
+              className="flex gap-6 whitespace-nowrap min-w-full"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{
+                repeat: Infinity,
+                ease: "linear",
+                duration: 20,
+              }}
+            >
               {duplicatedSkills.map((skill, index) => (
-                <motion.div
+                <div
                   key={index}
-                  whileHover={{ scale: 1.1, borderColor: "rgba(255, 255, 255, 0.4)", boxShadow: "0 0 25px rgba(255, 255, 255, 0.15)" }}
-                  className="premium-card px-8 py-4 rounded-2xl flex items-center justify-center min-w-[150px] cursor-pointer transition-all duration-300"
+                  className="premium-card px-8 py-4 rounded-2xl flex items-center justify-center min-w-[150px]"
                 >
                   <span className="text-gray-200 font-medium text-sm tracking-wide">{skill}</span>
-                </motion.div>
+                </div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -297,7 +238,7 @@ export default function App() {
 
         {/* Projects Section */}
         <section id="projects" className="max-w-4xl mx-auto px-4 py-24 z-10 relative">
-          <h2 className="text-3xl font-bold text-center mb-16 tracking-tight">Featured Engineering Project</h2>
+          <h2 className="text-3xl font-bold text-center mb-16 tracking-tight">Featured Projects</h2>
           <div className="grid gap-8">
             {portfolioData.projects.map((p, idx) => (
               <PremiumCard key={idx}>
@@ -318,25 +259,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Certifications Section */}
-        <section id="certifications" className="max-w-4xl mx-auto px-4 py-24 z-10 relative">
-          <h2 className="text-3xl font-bold text-center mb-16 tracking-tight">Certifications & Milestones</h2>
-          <PremiumCard>
-            <div className="grid md:grid-cols-2 gap-4">
-              {portfolioData.certifications.map((cert, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{ scale: 1.02, backgroundColor: "rgba(255, 255, 255, 0.08)" }}
-                  className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 transition-all cursor-default"
-                >
-                  <Award className="text-gray-300 shrink-0" size={20} />
-                  <span className="text-sm text-gray-300 font-medium">{cert}</span>
-                </motion.div>
-              ))}
-            </div>
-          </PremiumCard>
-        </section>
-
         {/* Contact Section */}
         <section id="contact" className="max-w-2xl mx-auto px-4 py-24 text-center z-10 relative">
           <PremiumCard>
@@ -351,10 +273,9 @@ export default function App() {
           </PremiumCard>
         </section>
 
-        {/* Footer */}
         <footer className="relative z-10 text-center py-10 border-t border-white/5 mt-10">
           <p className="text-xs text-gray-500 font-mono tracking-wide">
-            © {new Date().getFullYear()} {portfolioData.name} — Built with MERN & Framer Motion
+            © {new Date().getFullYear()} {portfolioData.name} — Built with React & Framer Motion
           </p>
         </footer>
       </div>

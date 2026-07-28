@@ -59,7 +59,7 @@ export default function Navbar() {
         {navItems.map((item) => {
           const isActive = activeTab === item.name;
           return (
-            
+            <a
               key={item.name}
               href={item.href}
               onClick={() => setActiveTab(item.name)}

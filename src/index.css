@@ -1,4 +1,13 @@
-/* Custom cursor support */
+@import "tailwindcss";
+
+/* Base Body Styles */
+body {
+  background-color: #030304;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Custom Cursor Reset */
 * {
   cursor: none;
 }
@@ -6,55 +15,38 @@ a, button, input, textarea {
   cursor: none;
 }
 
-/* Animated mesh background blobs */
-@keyframes blob-move {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(60px, -40px) scale(1.1); }
-  66% { transform: translate(-40px, 40px) scale(0.95); }
-}
-.animate-blob {
-  animation: blob-move 18s ease-in-out infinite;
-}
-.animate-blob-delay {
-  animation: blob-move 22s ease-in-out infinite;
-  animation-delay: -6s;
+/* Glassmorphic Card Style */
+.premium-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
 }
 
-/* Gradient text shimmer */
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.text-gradient-shimmer {
-  background: linear-gradient(90deg, #ffffff, #9ca3af, #ffffff, #9ca3af);
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: gradient-shift 6s linear infinite;
-}
-
-/* Scroll progress bar */
-.scroll-progress-bar {
-  background: linear-gradient(90deg, #ffffff, #9ca3af, #ffffff);
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
-}
-
-/* Preloader fade */
-@keyframes fade-out-loader {
-  to { opacity: 0; visibility: hidden; }
-}
-
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Section fade grid overlay (subtle premium texture) */
+/* Subtle Grid Texture */
 .grid-overlay {
   background-image:
     linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size: 48px 48px;
+}
+
+/* Moving Light Orbits */
+@keyframes orbit-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(120px, 80px) scale(1.3); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes orbit-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-100px, -90px) scale(1.2); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.animate-blob-1 {
+  animation: orbit-1 14s ease-in-out infinite;
+}
+
+.animate-blob-2 {
+  animation: orbit-2 18s ease-in-out infinite;
 }
