@@ -1,12 +1,76 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, Award, ExternalLink, Terminal, Sparkles, Code2, Briefcase, User } from 'lucide-react';
+
+// UI icons
+import {
+  Mail,
+  ArrowRight,
+  User,
+  ExternalLink,
+  Sparkles,
+  Briefcase,
+  Code2,
+  Award,
+  ArrowUpRight
+} from 'lucide-react';
+
+// Brand icons
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
+
 import Navbar from './components/Navbar';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import Preloader from './components/Preloader';
 import MagneticButton from './components/MagneticButton';
 import { portfolioData } from './data/portfolioData';
+
+
+const VideoLogoBadge = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.7 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        delay: 0.3,
+        type: "spring",
+        stiffness: 180,
+        damping: 15,
+      }}
+      className="
+        fixed
+        top-5
+        right-5
+        z-[9999]
+        w-20
+        h-20
+        md:w-24
+        md:h-24
+        rounded-full
+        overflow-hidden
+        border border-white/20
+        bg-black
+        shadow-[0_0_30px_rgba(168,85,247,0.45)]
+        backdrop-blur-xl
+      "
+    >
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="
+          w-full
+          h-full
+          object-cover
+          scale-[2.1]
+        "
+      >
+        <source src="/varshalogo.mp4" type="video/mp4" />
+      </video>
+    </motion.div>
+  );
+};
+
 
 // Interactive Particle Mesh Network Background
 const ParticleBackground = () => {
@@ -25,9 +89,11 @@ const ParticleBackground = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
+
     window.addEventListener('resize', handleResize);
 
-    const particles = Array.from({ length: 65 }, () => ({
+    const particleCount = Math.floor(Math.min(width, 1200) / 18);
+    const particles = Array.from({ length: particleCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       vx: (Math.random() - 0.5) * 0.6,
@@ -35,14 +101,20 @@ const ParticleBackground = () => {
       radius: Math.random() * 1.8 + 0.5,
     }));
 
-    let mouse = { x: null, y: null, radius: 150 };
+    const mouse = { x: null, y: null, radius: 150 };
 
     const handleMouseMove = (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     };
 
+    const handleMouseLeave = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
@@ -98,14 +170,20 @@ const ParticleBackground = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-60" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-0 opacity-60"
+    />
+  );
 };
 
-// Premium Card with 3D Tilt Effect & Dynamic Spotlight
+// Premium Card Component
 const PremiumCard = ({ children, className = '' }) => {
   const cardRef = useRef(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -163,20 +241,25 @@ const PremiumCard = ({ children, className = '' }) => {
   );
 };
 
-// Studio Interactive Kinetic Typography Title
+// Kinetic Title - Tighter Gaps
 const StudioTitle = ({ firstName = 'VARSHA', lastName = 'JOHNSON' }) => {
   const firstLetters = firstName.split('');
   const lastLetters = lastName.split('');
 
   return (
-    <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-5 my-6 select-none cursor-default">
+    <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 my-2 select-none cursor-default">
       <div className="flex tracking-wider">
         {firstLetters.map((char, index) => (
           <motion.span
             key={index}
-            whileHover={{ scale: 1.2, color: '#ffffff', y: -8, rotate: Math.random() * 8 - 4 }}
+            whileHover={{
+              scale: 1.15,
+              color: '#ffffff',
+              y: -4,
+              rotate: Math.random() * 8 - 4,
+            }}
             transition={{ type: 'spring', stiffness: 350, damping: 12 }}
-            className="text-5xl sm:text-7xl md:text-8xl font-extralight tracking-[0.18em] text-gray-300 uppercase inline-block transition-colors duration-200"
+            className="text-4xl sm:text-6xl md:text-7xl font-extralight tracking-[0.15em] text-gray-300 uppercase inline-block transition-colors duration-200"
           >
             {char}
           </motion.span>
@@ -187,9 +270,14 @@ const StudioTitle = ({ firstName = 'VARSHA', lastName = 'JOHNSON' }) => {
         {lastLetters.map((char, index) => (
           <motion.span
             key={index}
-            whileHover={{ scale: 1.25, color: '#a855f7', y: -8, rotate: Math.random() * -8 + 4 }}
+            whileHover={{
+              scale: 1.2,
+              color: '#a855f7',
+              y: -4,
+              rotate: Math.random() * -8 + 4,
+            }}
             transition={{ type: 'spring', stiffness: 350, damping: 12 }}
-            className="text-5xl sm:text-7xl md:text-8xl font-black tracking-normal text-white uppercase inline-block drop-shadow-[0_0_35px_rgba(255,255,255,0.4)] transition-colors duration-200"
+            className="text-4xl sm:text-6xl md:text-7xl font-black tracking-normal text-white uppercase inline-block drop-shadow-[0_0_35px_rgba(255,255,255,0.4)] transition-colors duration-200"
           >
             {char}
           </motion.span>
@@ -207,9 +295,18 @@ export default function App() {
     ...portfolioData.skills,
   ];
 
+  const handleSmoothScroll = useCallback((e, targetId) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
   return (
     <>
       <Preloader />
+      <VideoLogoBadge />
       <CustomCursor />
       <ScrollProgress />
 
@@ -224,69 +321,118 @@ export default function App() {
           <div className="absolute inset-0 grid-overlay opacity-20" />
         </div>
 
-        {/* Hero Section */}
-        <section id="home" className="relative min-h-screen flex flex-col items-center justify-center pt-24 px-4 text-center z-10">
-          <div className="max-w-5xl flex flex-col items-center">
-            
-            {/* Status Badge */}
-           
-            {/* Typography Name Header */}
-            <StudioTitle firstName="VARSHA" lastName="JOHNSON" />
+        {/* Hero Section - Compact Vertical Spacing */}
+        <section
+          id="home"
+          className="relative min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20 px-4 text-center z-10"
+        >
+          <div className="max-w-4xl flex flex-col items-center">
+            {/* Title Header */}
+            <StudioTitle
+              firstName={portfolioData.name?.split(' ')[0] || 'VARSHA'}
+              lastName={portfolioData.name?.split(' ')[1] || 'JOHNSON'}
+            />
 
-            {/* Subtitle / Bio */}
+            {/* Subtitle / Bio - Tightened Top/Bottom Margins */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed mb-10 tracking-wide"
+              className="text-gray-300 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed my-4 tracking-wide"
             >
               {portfolioData.summary}
             </motion.p>
 
-            {/* Actions */}
-            <motion.div 
+            {/* Action Buttons */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="flex flex-wrap items-center justify-center gap-5 mb-12"
+              className="flex flex-wrap items-center justify-center gap-4 my-4"
             >
               <MagneticButton
                 href="#projects"
-                className="px-8 py-3.5 rounded-full bg-white text-black font-semibold text-sm flex items-center gap-2 transition-all duration-300 cursor-pointer hover:bg-gray-100 hover:shadow-[0_0_35px_rgba(255,255,255,0.4)] hover:scale-105"
+                onClick={(e) => handleSmoothScroll(e, 'projects')}
+                className="px-7 py-3 rounded-full bg-white text-black font-semibold text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 cursor-pointer hover:bg-gray-100 hover:shadow-[0_0_35px_rgba(255,255,255,0.4)] hover:scale-105"
               >
-                View My Work <ArrowRight size={16} />
+                View My Work <ArrowRight size={15} />
               </MagneticButton>
 
               <MagneticButton
                 href="#contact"
-                className="px-8 py-3.5 rounded-full border border-white/20 text-white font-medium text-sm transition-all duration-300 bg-white/5 cursor-pointer hover:bg-white/10 hover:border-white/50 hover:scale-105"
+                onClick={(e) => handleSmoothScroll(e, 'contact')}
+                className="px-7 py-3 rounded-full border border-white/20 text-white font-medium text-xs sm:text-sm transition-all duration-300 bg-white/5 cursor-pointer hover:bg-white/10 hover:border-white/50 hover:scale-105"
               >
                 Contact Me
               </MagneticButton>
+            </motion.div>
+
+            {/* Social Icons Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="flex items-center gap-5 mt-2 mb-6"
+            >
+              <a
+                href="https://github.com/VarshaJ004"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
+                aria-label="GitHub Profile"
+              >
+                <FaGithub size={20} />
+              </a>
+              <a
+                href="https://linkedin.com/in/varsha-johnson-96291a267"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
+                aria-label="LinkedIn Profile"
+              >
+                <FaLinkedin size={20} />
+              </a>
+              <a
+                href={`mailto:${portfolioData.email}`}
+                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
+                aria-label="Send Email"
+              >
+                <Mail size={20} />
+              </a>
             </motion.div>
           </div>
         </section>
 
         {/* About Section */}
-        <section id="about" className="max-w-4xl mx-auto px-4 py-24 z-10 relative">
+        <section id="about" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
           <PremiumCard>
             <div className="flex items-center gap-3 mb-6">
               <User className="text-purple-400" size={22} />
               <h2 className="text-2xl font-bold text-white tracking-wide">About Me</h2>
             </div>
-            <p className="text-gray-300 leading-relaxed mb-6 font-light text-base">{portfolioData.about.whoIAm}</p>
-            <p className="text-gray-300 leading-relaxed mb-6 font-light text-base">{portfolioData.about.whatIDo}</p>
+            <p className="text-gray-300 leading-relaxed mb-6 font-light text-base">
+              {portfolioData.about.whoIAm}
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-6 font-light text-base">
+              {portfolioData.about.whatIDo}
+            </p>
             {portfolioData.hobbyWebsite && (
               <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
-                <span className="text-xs text-gray-400 font-mono">Personal Writing & Novel Showcase</span>
+                <span className="text-xs text-gray-400 font-mono">
+                  Personal Writing & Novel Showcase
+                </span>
                 <a
                   href={portfolioData.hobbyWebsite}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="text-xs text-white font-medium flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-purple-500 hover:bg-purple-500/10 transition-all group"
+                  aria-label="Visit personal writing showcase"
                 >
-                  Tales Under a Thengu 
-                  <ExternalLink size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  Tales Under a Thengu
+                  <ExternalLink
+                    size={13}
+                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                  />
                 </a>
               </div>
             )}
@@ -294,14 +440,14 @@ export default function App() {
         </section>
 
         {/* Skills Continuous Marquee */}
-        <section id="skills" className="py-20 relative overflow-hidden z-10">
-          <div className="text-center mb-10">
+        <section id="skills" className="py-16 relative overflow-hidden z-10">
+          <div className="text-center mb-8">
             <span className="text-xs font-mono uppercase tracking-widest text-purple-300 border border-purple-500/30 px-5 py-2 rounded-full bg-purple-500/10 inline-flex items-center gap-2">
               <Sparkles size={14} /> Technical Stack
             </span>
           </div>
 
-          <div className="flex w-full overflow-hidden select-none py-4">
+          <div className="flex w-full overflow-hidden select-none py-2">
             <motion.div
               className="flex gap-6 whitespace-nowrap min-w-full"
               animate={{ x: ['0%', '-50%'] }}
@@ -309,10 +455,12 @@ export default function App() {
             >
               {duplicatedSkills.map((skill, index) => (
                 <div
-                  key={index}
+                  key={`${skill}-${index}`}
                   className="premium-card px-8 py-4 rounded-2xl flex items-center justify-center min-w-[160px] border border-white/10 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all"
                 >
-                  <span className="text-gray-200 font-medium text-sm tracking-wide">{skill}</span>
+                  <span className="text-gray-200 font-medium text-sm tracking-wide">
+                    {skill}
+                  </span>
                 </div>
               ))}
             </motion.div>
@@ -320,8 +468,8 @@ export default function App() {
         </section>
 
         {/* Experience Section */}
-        <section id="experience" className="max-w-4xl mx-auto px-4 py-24 z-10 relative">
-          <div className="flex items-center justify-center gap-3 mb-16">
+        <section id="experience" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
+          <div className="flex items-center justify-center gap-3 mb-12">
             <Briefcase className="text-purple-400" size={28} />
             <h2 className="text-3xl font-bold tracking-tight">Experience & Leadership</h2>
           </div>
@@ -330,10 +478,16 @@ export default function App() {
               <PremiumCard key={idx}>
                 <div className="flex justify-between items-start flex-wrap gap-2 mb-4">
                   <div>
-                    <h3 className="text-xl font-bold text-white tracking-wide">{exp.title}</h3>
-                    <p className="text-sm text-purple-400 font-mono mt-0.5">{exp.organization}</p>
+                    <h3 className="text-xl font-bold text-white tracking-wide">
+                      {exp.title}
+                    </h3>
+                    <p className="text-sm text-purple-400 font-mono mt-0.5">
+                      {exp.organization}
+                    </p>
                   </div>
-                  <span className="text-xs font-mono px-3.5 py-1.5 rounded-full text-gray-300 border border-white/10 bg-white/5">{exp.period}</span>
+                  <span className="text-xs font-mono px-3.5 py-1.5 rounded-full text-gray-300 border border-white/10 bg-white/5">
+                    {exp.period}
+                  </span>
                 </div>
                 <ul className="space-y-2.5 text-sm text-gray-300 font-light leading-relaxed">
                   {exp.description.map((item, i) => (
@@ -349,8 +503,8 @@ export default function App() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="max-w-4xl mx-auto px-4 py-24 z-10 relative">
-          <div className="flex items-center justify-center gap-3 mb-16">
+        <section id="projects" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
+          <div className="flex items-center justify-center gap-3 mb-12">
             <Code2 className="text-purple-400" size={28} />
             <h2 className="text-3xl font-bold tracking-tight">Featured Projects</h2>
           </div>
@@ -358,13 +512,22 @@ export default function App() {
             {portfolioData.projects.map((p, idx) => (
               <PremiumCard key={idx}>
                 <div className="flex justify-between items-start mb-3 flex-wrap gap-2">
-                  <h3 className="text-2xl font-bold tracking-wide text-white group-hover:text-purple-300 transition-colors">{p.title}</h3>
-                  <span className="text-xs font-mono text-gray-400 border border-white/10 px-3 py-1 rounded-full bg-white/5">{p.institution}</span>
+                  <h3 className="text-2xl font-bold tracking-wide text-white group-hover:text-purple-300 transition-colors">
+                    {p.title}
+                  </h3>
+                  <span className="text-xs font-mono text-gray-400 border border-white/10 px-3 py-1 rounded-full bg-white/5">
+                    {p.institution}
+                  </span>
                 </div>
-                <p className="text-gray-300 text-sm mb-6 leading-relaxed font-light">{p.description}</p>
+                <p className="text-gray-300 text-sm mb-6 leading-relaxed font-light">
+                  {p.description}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {p.tags.map((tag, i) => (
-                    <span key={i} className="text-xs font-mono bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 rounded-full text-purple-300">
+                    <span
+                      key={i}
+                      className="text-xs font-mono bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 rounded-full text-purple-300"
+                    >
                       {tag}
                     </span>
                   ))}
@@ -375,8 +538,10 @@ export default function App() {
         </section>
 
         {/* Certifications Section */}
-        <section id="certifications" className="max-w-4xl mx-auto px-4 py-24 z-10 relative">
-          <h2 className="text-3xl font-bold text-center mb-16 tracking-tight">Certifications & Milestones</h2>
+        <section id="certifications" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
+          <h2 className="text-3xl font-bold text-center mb-12 tracking-tight">
+            Certifications & Milestones
+          </h2>
           <PremiumCard>
             <div className="grid sm:grid-cols-2 gap-4">
               {portfolioData.certifications.map((cert, idx) => (
@@ -385,7 +550,10 @@ export default function App() {
                   whileHover={{ scale: 1.02, backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
                   className="flex items-center gap-3.5 p-4 rounded-2xl bg-white/5 border border-white/10 transition-all cursor-default group"
                 >
-                  <Award className="text-purple-400 shrink-0 group-hover:scale-110 transition-transform" size={22} />
+                  <Award
+                    className="text-purple-400 shrink-0 group-hover:scale-110 transition-transform"
+                    size={22}
+                  />
                   <span className="text-sm text-gray-200 font-medium">{cert}</span>
                 </motion.div>
               ))}
@@ -394,10 +562,15 @@ export default function App() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="max-w-2xl mx-auto px-4 py-24 text-center z-10 relative">
+        <section id="contact" className="max-w-2xl mx-auto px-4 py-16 text-center z-10 relative">
           <PremiumCard>
+            <div className="inline-flex p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 mb-6">
+              <Mail size={24} />
+            </div>
             <h2 className="text-3xl font-bold mb-4 tracking-tight">Get In Touch</h2>
-            <p className="text-gray-400 text-sm mb-8 font-light">Open for opportunities in Full-Stack Web Engineering, Cybersecurity, and AI Workflows.</p>
+            <p className="text-gray-400 text-sm mb-8 font-light">
+              Open for opportunities in Full-Stack Web Engineering, Cybersecurity, and AI Workflows.
+            </p>
             <MagneticButton
               href={`mailto:${portfolioData.email}`}
               className="inline-flex items-center gap-2 px-9 py-4 rounded-full bg-white text-black font-semibold text-sm transition-all duration-300 cursor-pointer hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] hover:scale-105"
@@ -408,7 +581,7 @@ export default function App() {
         </section>
 
         {/* Footer */}
-        <footer className="relative z-10 text-center py-10 border-t border-white/5 mt-10">
+        <footer className="relative z-10 text-center py-8 border-t border-white/5 mt-8">
           <p className="text-xs text-gray-500 font-mono tracking-wide">
             © {new Date().getFullYear()} {portfolioData.name} — Built with React & Framer Motion
           </p>
