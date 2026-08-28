@@ -4,7 +4,6 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 // UI icons
 import {
   Mail,
-  ArrowRight,
   User,
   ExternalLink,
   Sparkles,
@@ -14,16 +13,13 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 
-// Brand icons
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
-
 import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import Preloader from './components/Preloader';
 import MagneticButton from './components/MagneticButton';
 import { portfolioData } from './data/portfolioData';
-
 
 const VideoLogoBadge = () => {
   return (
@@ -32,7 +28,7 @@ const VideoLogoBadge = () => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{
         delay: 0.3,
-        type: "spring",
+        type: 'spring',
         stiffness: 180,
         damping: 15,
       }}
@@ -70,7 +66,6 @@ const VideoLogoBadge = () => {
     </motion.div>
   );
 };
-
 
 // Interactive Particle Mesh Network Background
 const ParticleBackground = () => {
@@ -241,52 +236,6 @@ const PremiumCard = ({ children, className = '' }) => {
   );
 };
 
-// Kinetic Title - Tighter Gaps
-const StudioTitle = ({ firstName = 'VARSHA', lastName = 'JOHNSON' }) => {
-  const firstLetters = firstName.split('');
-  const lastLetters = lastName.split('');
-
-  return (
-    <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 my-2 select-none cursor-default">
-      <div className="flex tracking-wider">
-        {firstLetters.map((char, index) => (
-          <motion.span
-            key={index}
-            whileHover={{
-              scale: 1.15,
-              color: '#ffffff',
-              y: -4,
-              rotate: Math.random() * 8 - 4,
-            }}
-            transition={{ type: 'spring', stiffness: 350, damping: 12 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-extralight tracking-[0.15em] text-gray-300 uppercase inline-block transition-colors duration-200"
-          >
-            {char}
-          </motion.span>
-        ))}
-      </div>
-
-      <div className="flex tracking-tight">
-        {lastLetters.map((char, index) => (
-          <motion.span
-            key={index}
-            whileHover={{
-              scale: 1.2,
-              color: '#a855f7',
-              y: -4,
-              rotate: Math.random() * -8 + 4,
-            }}
-            transition={{ type: 'spring', stiffness: 350, damping: 12 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-black tracking-normal text-white uppercase inline-block drop-shadow-[0_0_35px_rgba(255,255,255,0.4)] transition-colors duration-200"
-          >
-            {char}
-          </motion.span>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 export default function App() {
   const duplicatedSkills = [
     ...portfolioData.skills,
@@ -294,14 +243,6 @@ export default function App() {
     ...portfolioData.skills,
     ...portfolioData.skills,
   ];
-
-  const handleSmoothScroll = useCallback((e, targetId) => {
-    e.preventDefault();
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, []);
 
   return (
     <>
@@ -321,87 +262,8 @@ export default function App() {
           <div className="absolute inset-0 grid-overlay opacity-20" />
         </div>
 
-        {/* Hero Section - Compact Vertical Spacing */}
-        <section
-          id="home"
-          className="relative min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20 px-4 text-center z-10"
-        >
-          <div className="max-w-4xl flex flex-col items-center">
-            {/* Title Header */}
-            <StudioTitle
-              firstName={portfolioData.name?.split(' ')[0] || 'VARSHA'}
-              lastName={portfolioData.name?.split(' ')[1] || 'JOHNSON'}
-            />
-
-            {/* Subtitle / Bio - Tightened Top/Bottom Margins */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-gray-300 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed my-4 tracking-wide"
-            >
-              {portfolioData.summary}
-            </motion.p>
-
-            {/* Action Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="flex flex-wrap items-center justify-center gap-4 my-4"
-            >
-              <MagneticButton
-                href="#projects"
-                onClick={(e) => handleSmoothScroll(e, 'projects')}
-                className="px-7 py-3 rounded-full bg-white text-black font-semibold text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 cursor-pointer hover:bg-gray-100 hover:shadow-[0_0_35px_rgba(255,255,255,0.4)] hover:scale-105"
-              >
-                View My Work <ArrowRight size={15} />
-              </MagneticButton>
-
-              <MagneticButton
-                href="#contact"
-                onClick={(e) => handleSmoothScroll(e, 'contact')}
-                className="px-7 py-3 rounded-full border border-white/20 text-white font-medium text-xs sm:text-sm transition-all duration-300 bg-white/5 cursor-pointer hover:bg-white/10 hover:border-white/50 hover:scale-105"
-              >
-                Contact Me
-              </MagneticButton>
-            </motion.div>
-
-            {/* Social Icons Bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="flex items-center gap-5 mt-2 mb-6"
-            >
-              <a
-                href="https://github.com/VarshaJ004"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
-                aria-label="GitHub Profile"
-              >
-                <FaGithub size={20} />
-              </a>
-              <a
-                href="https://linkedin.com/in/varsha-johnson-96291a267"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
-                aria-label="LinkedIn Profile"
-              >
-                <FaLinkedin size={20} />
-              </a>
-              <a
-                href={`mailto:${portfolioData.email}`}
-                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
-                aria-label="Send Email"
-              >
-                <Mail size={20} />
-              </a>
-            </motion.div>
-          </div>
-        </section>
+        {/* Imported Hero Component */}
+        <Hero />
 
         {/* About Section */}
         <section id="about" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">

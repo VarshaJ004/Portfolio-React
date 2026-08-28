@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const navItems = [
-  { name: 'HOME', href: '#home' },
   { name: 'ABOUT', href: '#about' },
   { name: 'SKILLS', href: '#skills' },
   { name: 'EXPERIENCE', href: '#experience' },
