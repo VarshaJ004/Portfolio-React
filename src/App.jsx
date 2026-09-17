@@ -266,68 +266,314 @@ export default function App() {
         <Hero />
 
         {/* About Section */}
-        <section id="about" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
-          <PremiumCard>
-            <div className="flex items-center gap-3 mb-6">
-              <User className="text-purple-400" size={22} />
-              <h2 className="text-2xl font-bold text-white tracking-wide">About Me</h2>
-            </div>
-            <p className="text-gray-300 leading-relaxed mb-6 font-light text-base">
+<section
+  id="about"
+  className="relative min-h-screen px-6 py-24 z-10 overflow-hidden"
+>
+  {/* Background glow */}
+  <div className="about-glow about-glow-one" />
+  <div className="about-glow about-glow-two" />
+
+  <div className="max-w-6xl mx-auto relative">
+
+    {/* Section heading */}
+    <div className="mb-14">
+      <div className="flex items-center gap-3 mb-4">
+        <span className="about-line" />
+        <span className="text-xs tracking-[0.35em] text-purple-300 uppercase font-mono">
+          Profile // 001
+        </span>
+      </div>
+
+      <h2 className="text-5xl md:text-7xl font-black tracking-tight text-white">
+        MORE THAN
+        <span className="block text-purple-400">JUST CODE.</span>
+      </h2>
+
+      <p className="mt-5 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
+        A developer, cybersecurity enthusiast and AI explorer building
+        digital experiences where creativity meets technology.
+      </p>
+    </div>
+
+    {/* Main futuristic panel */}
+    <div className="about-interface">
+
+      {/* Top status bar */}
+      <div className="about-status">
+        <div className="flex items-center gap-2">
+          <span className="status-dot" />
+          <span>ONLINE / BUILDING</span>
+        </div>
+
+        <span className="hidden md:block">
+          VARSHA.JOHNSON // DIGITAL IDENTITY
+        </span>
+      </div>
+
+      <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 p-7 md:p-12">
+
+        {/* LEFT */}
+        <div className="relative">
+
+          {/* Identity */}
+          <div className="mb-10">
+            <span className="text-purple-400 text-xs font-mono tracking-[0.25em]">
+              WHO I AM
+            </span>
+
+            <h3 className="text-3xl md:text-4xl font-bold text-white mt-3 mb-5">
+              I build things.
+              <br />
+              <span className="about-gradient-text">
+                I break things.
+              </span>
+              <br />
+              I learn from both.
+            </h3>
+
+            <p className="text-gray-400 leading-7 text-sm md:text-base max-w-xl">
               {portfolioData.about.whoIAm}
             </p>
-            <p className="text-gray-300 leading-relaxed mb-6 font-light text-base">
-              {portfolioData.about.whatIDo}
-            </p>
-            {portfolioData.hobbyWebsite && (
-              <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
-                <span className="text-xs text-gray-400 font-mono">
-                  Personal Writing & Novel Showcase
-                </span>
-                <a
-                  href={portfolioData.hobbyWebsite}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-white font-medium flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-purple-500 hover:bg-purple-500/10 transition-all group"
-                  aria-label="Visit personal writing showcase"
-                >
-                  Tales Under a Thengu
-                  <ExternalLink
-                    size={13}
-                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                  />
-                </a>
+          </div>
+
+          {/* What I do */}
+          <div className="about-terminal">
+            <div className="terminal-header">
+              <div className="flex gap-1.5">
+                <span />
+                <span />
+                <span />
               </div>
-            )}
-          </PremiumCard>
-        </section>
 
-        {/* Skills Continuous Marquee */}
-        <section id="skills" className="py-16 relative overflow-hidden z-10">
-          <div className="text-center mb-8">
-            <span className="text-xs font-mono uppercase tracking-widest text-purple-300 border border-purple-500/30 px-5 py-2 rounded-full bg-purple-500/10 inline-flex items-center gap-2">
-              <Sparkles size={14} /> Technical Stack
-            </span>
+              <span className="text-[10px] text-gray-500 font-mono">
+                varsha@portfolio:~$
+              </span>
+            </div>
+
+            <div className="terminal-content">
+              <p className="text-purple-400 font-mono text-xs mb-3">
+                $ cat what-i-do.txt
+              </p>
+
+              <p className="text-gray-300 text-sm leading-7">
+                {portfolioData.about.whatIDo}
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="about-chip">FULL STACK</span>
+                <span className="about-chip">CYBERSECURITY</span>
+                <span className="about-chip">AI</span>
+                <span className="about-chip">CREATIVE TECH</span>
+              </div>
+            </div>
           </div>
 
-          <div className="flex w-full overflow-hidden select-none py-2">
-            <motion.div
-              className="flex gap-6 whitespace-nowrap min-w-full"
-              animate={{ x: ['0%', '-50%'] }}
-              transition={{ repeat: Infinity, ease: 'linear', duration: 24 }}
-            >
-              {duplicatedSkills.map((skill, index) => (
-                <div
-                  key={`${skill}-${index}`}
-                  className="premium-card px-8 py-4 rounded-2xl flex items-center justify-center min-w-[160px] border border-white/10 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all"
-                >
-                  <span className="text-gray-200 font-medium text-sm tracking-wide">
-                    {skill}
-                  </span>
-                </div>
-              ))}
-            </motion.div>
+          {/* Mini quote */}
+          <div className="about-quote">
+            <span className="text-purple-400 text-2xl">“</span>
+            <p>
+              Always learning.
+              <br />
+              Always building.
+            </p>
           </div>
-        </section>
+        </div>
+
+        {/* RIGHT */}
+        <div className="relative flex items-center justify-center min-h-[430px]">
+
+          {/* Orbit rings */}
+          <div className="about-orbit orbit-large" />
+          <div className="about-orbit orbit-medium" />
+          <div className="about-orbit orbit-small" />
+
+          {/* Floating labels */}
+          <div className="about-float-card float-one">
+            <span className="text-purple-400">01</span>
+            <div>
+              <strong>BUILD</strong>
+              <small>Full Stack</small>
+            </div>
+          </div>
+
+          <div className="about-float-card float-two">
+            <span className="text-purple-400">02</span>
+            <div>
+              <strong>SECURE</strong>
+              <small>Cybersecurity</small>
+            </div>
+          </div>
+
+          <div className="about-float-card float-three">
+            <span className="text-purple-400">03</span>
+            <div>
+              <strong>EXPLORE</strong>
+              <small>Artificial Intelligence</small>
+            </div>
+          </div>
+
+          {/* Core */}
+          <div className="about-core">
+            <div className="core-glow" />
+
+            <div className="relative z-10 text-center">
+              <span className="text-[10px] tracking-[0.35em] text-gray-500 font-mono">
+                DIGITAL
+              </span>
+
+              <div className="text-7xl md:text-8xl font-black mt-1 about-v">
+                V
+              </div>
+
+              <span className="text-[10px] tracking-[0.3em] text-purple-300 font-mono">
+                VARSHA
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom metrics */}
+      <div className="about-metrics">
+
+        <div className="metric">
+          <span className="metric-number">01</span>
+          <div>
+            <strong>CURIOUS</strong>
+            <small>Always exploring</small>
+          </div>
+        </div>
+
+        <div className="metric">
+          <span className="metric-number">02</span>
+          <div>
+            <strong>SECURE</strong>
+            <small>Think like an attacker</small>
+          </div>
+        </div>
+
+        <div className="metric">
+          <span className="metric-number">03</span>
+          <div>
+            <strong>CREATE</strong>
+            <small>Turn ideas into products</small>
+          </div>
+        </div>
+
+        {portfolioData.hobbyWebsite && (
+          <a
+            href={portfolioData.hobbyWebsite}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="writing-portal"
+          >
+            <div>
+              <span>OFF THE SCREEN</span>
+              <strong>Tales Under a Thengu</strong>
+            </div>
+
+            <ExternalLink
+              size={17}
+              className="writing-arrow"
+            />
+          </a>
+        )}
+
+      </div>
+    </div>
+
+    {/* Bottom label */}
+    <div className="flex justify-between items-center mt-8 text-[10px] font-mono tracking-[0.2em] text-gray-600">
+      <span>ABOUT / IDENTITY / 2026</span>
+      <span>SCROLL TO EXPLORE ↓</span>
+    </div>
+
+  </div>
+</section>
+
+{/* Skills Section */}
+<section
+  id="skills"
+  className="relative py-24 overflow-hidden z-10"
+>
+  <div className="max-w-6xl mx-auto px-6">
+
+    {/* Heading */}
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+
+      <div>
+        <p className="text-xs font-mono tracking-[0.3em] uppercase text-purple-400 mb-4">
+          Skills
+        </p>
+
+        <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-white">
+          Things I
+          <span className="text-purple-400"> work with.</span>
+        </h2>
+      </div>
+
+      <p className="text-sm text-gray-500 max-w-sm leading-6">
+        Technologies I use to build, experiment, solve problems and
+        occasionally make things much harder than they need to be.
+      </p>
+    </div>
+
+    {/* Category labels */}
+    <div className="flex flex-wrap gap-2 mb-8">
+      <span className="skill-category active">DEVELOPMENT</span>
+      <span className="skill-category">DATABASE</span>
+      <span className="skill-category">CLOUD</span>
+      <span className="skill-category">SECURITY</span>
+      <span className="skill-category">TOOLS</span>
+    </div>
+
+  </div>
+
+  {/* Marquee */}
+  <div className="relative">
+
+    {/* Fade edges */}
+    <div className="skill-fade-left" />
+    <div className="skill-fade-right" />
+
+    <motion.div
+      className="flex gap-4 w-max"
+      animate={{ x: ["0%", "-50%"] }}
+      transition={{
+        repeat: Infinity,
+        ease: "linear",
+        duration: 30,
+      }}
+    >
+      {duplicatedSkills.map((skill, index) => (
+        <div
+          key={`${skill}-${index}`}
+          className="skill-item group"
+        >
+          <span className="skill-number">
+            {String((index % 9) + 1).padStart(2, "0")}
+          </span>
+
+          <span className="skill-name">
+            {skill}
+          </span>
+
+          <span className="skill-dot" />
+        </div>
+      ))}
+    </motion.div>
+
+  </div>
+
+  {/* Small bottom line */}
+  <div className="max-w-6xl mx-auto px-6 mt-12">
+    <div className="skill-bottom-line">
+      <span>LEARNING NEVER STOPS</span>
+      <span>MORE TO COME →</span>
+    </div>
+  </div>
+</section>
 
         {/* Experience Section */}
         <section id="experience" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
@@ -365,39 +611,116 @@ export default function App() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
-          <div className="flex items-center justify-center gap-3 mb-12">
-            <Code2 className="text-purple-400" size={28} />
-            <h2 className="text-3xl font-bold tracking-tight">Featured Projects</h2>
+<section
+  id="projects"
+  className="max-w-5xl mx-auto px-4 py-24 z-10 relative"
+>
+  <div className="flex items-end justify-between mb-12">
+    <div>
+      <p className="text-xs font-mono tracking-[0.3em] uppercase text-purple-400 mb-3">
+        Selected Work
+      </p>
+
+      <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+        Featured Projects
+      </h2>
+    </div>
+
+    <Code2
+      className="text-purple-400 hidden md:block"
+      size={28}
+    />
+  </div>
+
+  <div className="grid gap-6">
+    {portfolioData.projects.map((p, idx) => {
+
+      // Microcosm website
+      const projectLink =
+        p.title?.toLowerCase().includes("microcosm")
+          ? "https://microcosm2025.github.io/Website/"
+          : p.link;
+
+      const ProjectContent = (
+        <>
+          {/* Project number */}
+          <div className="flex items-center justify-between mb-6">
+            <span className="text-xs font-mono text-purple-400">
+              PROJECT / {String(idx + 1).padStart(2, "0")}
+            </span>
+
+            <span className="text-xs font-mono text-gray-500 border border-white/10 px-3 py-1 rounded-full">
+              {p.institution}
+            </span>
           </div>
-          <div className="grid gap-8">
-            {portfolioData.projects.map((p, idx) => (
-              <PremiumCard key={idx}>
-                <div className="flex justify-between items-start mb-3 flex-wrap gap-2">
-                  <h3 className="text-2xl font-bold tracking-wide text-white group-hover:text-purple-300 transition-colors">
-                    {p.title}
-                  </h3>
-                  <span className="text-xs font-mono text-gray-400 border border-white/10 px-3 py-1 rounded-full bg-white/5">
-                    {p.institution}
-                  </span>
-                </div>
-                <p className="text-gray-300 text-sm mb-6 leading-relaxed font-light">
-                  {p.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {p.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="text-xs font-mono bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 rounded-full text-purple-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </PremiumCard>
+
+          {/* Title */}
+          <div className="flex items-center gap-3 mb-4">
+            <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-purple-300 transition-colors">
+              {p.title}
+            </h3>
+
+            {projectLink && (
+              <ExternalLink
+                size={18}
+                className="text-gray-600 group-hover:text-purple-400 transition-all group-hover:translate-x-1 group-hover:-translate-y-1"
+              />
+            )}
+          </div>
+
+          {/* Description */}
+          <p className="text-gray-400 text-sm md:text-base mb-7 leading-7 max-w-3xl">
+            {p.description}
+          </p>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            {p.tags.map((tag, i) => (
+              <span
+                key={i}
+                className="text-xs font-mono px-3 py-1.5 rounded-full text-gray-300 bg-white/[0.03] border border-white/[0.08] group-hover:border-purple-500/30 group-hover:text-purple-300 transition-all"
+              >
+                {tag}
+              </span>
             ))}
           </div>
-        </section>
+
+          {/* View Project */}
+          {projectLink && (
+            <div className="mt-8 pt-5 border-t border-white/[0.06] flex items-center justify-between">
+              <span className="text-[10px] font-mono tracking-[0.2em] text-gray-600 uppercase">
+                View Project
+              </span>
+
+              <span className="text-xs text-gray-400 group-hover:text-white transition-colors">
+                Explore →
+              </span>
+            </div>
+          )}
+        </>
+      );
+
+      return projectLink ? (
+        <a
+          key={idx}
+          href={projectLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="project-card group block"
+        >
+          {ProjectContent}
+        </a>
+      ) : (
+        <div
+          key={idx}
+          className="project-card group"
+        >
+          {ProjectContent}
+        </div>
+      );
+    })}
+  </div>
+</section>
 
         {/* Certifications Section */}
         <section id="certifications" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
