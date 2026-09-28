@@ -1,29 +1,26 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-
-// UI icons
-import {
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { 
+  Code2, 
+  Award, 
+  X, 
+  Eye, 
+  CheckCircle2, 
+  ExternalLink, 
+  ArrowUpRight,
   Mail,
-  ArrowRight,
   User,
-  ExternalLink,
   Sparkles,
-  Briefcase,
-  Code2,
-  Award,
-  ArrowUpRight
+  Briefcase
 } from 'lucide-react';
 
-// Brand icons
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
-
 import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import Preloader from './components/Preloader';
 import MagneticButton from './components/MagneticButton';
 import { portfolioData } from './data/portfolioData';
-
 
 const VideoLogoBadge = () => {
   return (
@@ -32,7 +29,7 @@ const VideoLogoBadge = () => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{
         delay: 0.3,
-        type: "spring",
+        type: 'spring',
         stiffness: 180,
         damping: 15,
       }}
@@ -70,7 +67,6 @@ const VideoLogoBadge = () => {
     </motion.div>
   );
 };
-
 
 // Interactive Particle Mesh Network Background
 const ParticleBackground = () => {
@@ -241,52 +237,6 @@ const PremiumCard = ({ children, className = '' }) => {
   );
 };
 
-// Kinetic Title - Tighter Gaps
-const StudioTitle = ({ firstName = 'VARSHA', lastName = 'JOHNSON' }) => {
-  const firstLetters = firstName.split('');
-  const lastLetters = lastName.split('');
-
-  return (
-    <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 my-2 select-none cursor-default">
-      <div className="flex tracking-wider">
-        {firstLetters.map((char, index) => (
-          <motion.span
-            key={index}
-            whileHover={{
-              scale: 1.15,
-              color: '#ffffff',
-              y: -4,
-              rotate: Math.random() * 8 - 4,
-            }}
-            transition={{ type: 'spring', stiffness: 350, damping: 12 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-extralight tracking-[0.15em] text-gray-300 uppercase inline-block transition-colors duration-200"
-          >
-            {char}
-          </motion.span>
-        ))}
-      </div>
-
-      <div className="flex tracking-tight">
-        {lastLetters.map((char, index) => (
-          <motion.span
-            key={index}
-            whileHover={{
-              scale: 1.2,
-              color: '#a855f7',
-              y: -4,
-              rotate: Math.random() * -8 + 4,
-            }}
-            transition={{ type: 'spring', stiffness: 350, damping: 12 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-black tracking-normal text-white uppercase inline-block drop-shadow-[0_0_35px_rgba(255,255,255,0.4)] transition-colors duration-200"
-          >
-            {char}
-          </motion.span>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 export default function App() {
   const duplicatedSkills = [
     ...portfolioData.skills,
@@ -294,14 +244,6 @@ export default function App() {
     ...portfolioData.skills,
     ...portfolioData.skills,
   ];
-
-  const handleSmoothScroll = useCallback((e, targetId) => {
-    e.preventDefault();
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, []);
 
   return (
     <>
@@ -321,151 +263,318 @@ export default function App() {
           <div className="absolute inset-0 grid-overlay opacity-20" />
         </div>
 
-        {/* Hero Section - Compact Vertical Spacing */}
-        <section
-          id="home"
-          className="relative min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20 px-4 text-center z-10"
-        >
-          <div className="max-w-4xl flex flex-col items-center">
-            {/* Title Header */}
-            <StudioTitle
-              firstName={portfolioData.name?.split(' ')[0] || 'VARSHA'}
-              lastName={portfolioData.name?.split(' ')[1] || 'JOHNSON'}
-            />
-
-            {/* Subtitle / Bio - Tightened Top/Bottom Margins */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-gray-300 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed my-4 tracking-wide"
-            >
-              {portfolioData.summary}
-            </motion.p>
-
-            {/* Action Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="flex flex-wrap items-center justify-center gap-4 my-4"
-            >
-              <MagneticButton
-                href="#projects"
-                onClick={(e) => handleSmoothScroll(e, 'projects')}
-                className="px-7 py-3 rounded-full bg-white text-black font-semibold text-xs sm:text-sm flex items-center gap-2 transition-all duration-300 cursor-pointer hover:bg-gray-100 hover:shadow-[0_0_35px_rgba(255,255,255,0.4)] hover:scale-105"
-              >
-                View My Work <ArrowRight size={15} />
-              </MagneticButton>
-
-              <MagneticButton
-                href="#contact"
-                onClick={(e) => handleSmoothScroll(e, 'contact')}
-                className="px-7 py-3 rounded-full border border-white/20 text-white font-medium text-xs sm:text-sm transition-all duration-300 bg-white/5 cursor-pointer hover:bg-white/10 hover:border-white/50 hover:scale-105"
-              >
-                Contact Me
-              </MagneticButton>
-            </motion.div>
-
-            {/* Social Icons Bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="flex items-center gap-5 mt-2 mb-6"
-            >
-              <a
-                href="https://github.com/VarshaJ004"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
-                aria-label="GitHub Profile"
-              >
-                <FaGithub size={20} />
-              </a>
-              <a
-                href="https://linkedin.com/in/varsha-johnson-96291a267"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
-                aria-label="LinkedIn Profile"
-              >
-                <FaLinkedin size={20} />
-              </a>
-              <a
-                href={`mailto:${portfolioData.email}`}
-                className="text-gray-400 hover:text-white transition-colors duration-200 hover:scale-110"
-                aria-label="Send Email"
-              >
-                <Mail size={20} />
-              </a>
-            </motion.div>
-          </div>
-        </section>
+        {/* Imported Hero Component */}
+        <Hero />
 
         {/* About Section */}
-        <section id="about" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
-          <PremiumCard>
-            <div className="flex items-center gap-3 mb-6">
-              <User className="text-purple-400" size={22} />
-              <h2 className="text-2xl font-bold text-white tracking-wide">About Me</h2>
-            </div>
-            <p className="text-gray-300 leading-relaxed mb-6 font-light text-base">
+<section
+  id="about"
+  className="relative min-h-screen px-6 py-24 z-10 overflow-hidden"
+>
+  {/* Background glow */}
+  <div className="about-glow about-glow-one" />
+  <div className="about-glow about-glow-two" />
+
+  <div className="max-w-6xl mx-auto relative">
+
+    {/* Section heading */}
+    <div className="mb-14">
+      <div className="flex items-center gap-3 mb-4">
+        <span className="about-line" />
+        <span className="text-xs tracking-[0.35em] text-purple-300 uppercase font-mono">
+          Profile // 001
+        </span>
+      </div>
+
+      <h2 className="text-5xl md:text-7xl font-black tracking-tight text-white">
+        MORE THAN
+        <span className="block text-purple-400">JUST CODE.</span>
+      </h2>
+
+      <p className="mt-5 text-gray-400 max-w-xl text-sm md:text-base leading-relaxed">
+        A developer, cybersecurity enthusiast and AI explorer building
+        digital experiences where creativity meets technology.
+      </p>
+    </div>
+
+    {/* Main futuristic panel */}
+    <div className="about-interface">
+
+      {/* Top status bar */}
+      <div className="about-status">
+        <div className="flex items-center gap-2">
+          <span className="status-dot" />
+          <span>ONLINE / BUILDING</span>
+        </div>
+
+        <span className="hidden md:block">
+          VARSHA.JOHNSON // DIGITAL IDENTITY
+        </span>
+      </div>
+
+      <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 p-7 md:p-12">
+
+        {/* LEFT */}
+        <div className="relative">
+
+          {/* Identity */}
+          <div className="mb-10">
+            <span className="text-purple-400 text-xs font-mono tracking-[0.25em]">
+              WHO I AM
+            </span>
+
+            <h3 className="text-3xl md:text-4xl font-bold text-white mt-3 mb-5">
+              I build things.
+              <br />
+              <span className="about-gradient-text">
+                I break things.
+              </span>
+              <br />
+              I learn from both.
+            </h3>
+
+            <p className="text-gray-400 leading-7 text-sm md:text-base max-w-xl">
               {portfolioData.about.whoIAm}
             </p>
-            <p className="text-gray-300 leading-relaxed mb-6 font-light text-base">
-              {portfolioData.about.whatIDo}
-            </p>
-            {portfolioData.hobbyWebsite && (
-              <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
-                <span className="text-xs text-gray-400 font-mono">
-                  Personal Writing & Novel Showcase
-                </span>
-                <a
-                  href={portfolioData.hobbyWebsite}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-white font-medium flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-purple-500 hover:bg-purple-500/10 transition-all group"
-                  aria-label="Visit personal writing showcase"
-                >
-                  Tales Under a Thengu
-                  <ExternalLink
-                    size={13}
-                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                  />
-                </a>
+          </div>
+
+          {/* What I do */}
+          <div className="about-terminal">
+            <div className="terminal-header">
+              <div className="flex gap-1.5">
+                <span />
+                <span />
+                <span />
               </div>
-            )}
-          </PremiumCard>
-        </section>
 
-        {/* Skills Continuous Marquee */}
-        <section id="skills" className="py-16 relative overflow-hidden z-10">
-          <div className="text-center mb-8">
-            <span className="text-xs font-mono uppercase tracking-widest text-purple-300 border border-purple-500/30 px-5 py-2 rounded-full bg-purple-500/10 inline-flex items-center gap-2">
-              <Sparkles size={14} /> Technical Stack
-            </span>
+              <span className="text-[10px] text-gray-500 font-mono">
+                varsha@portfolio:~$
+              </span>
+            </div>
+
+            <div className="terminal-content">
+              <p className="text-purple-400 font-mono text-xs mb-3">
+                $ cat what-i-do.txt
+              </p>
+
+              <p className="text-gray-300 text-sm leading-7">
+                {portfolioData.about.whatIDo}
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="about-chip">FULL STACK</span>
+                <span className="about-chip">CYBERSECURITY</span>
+                <span className="about-chip">AI</span>
+                <span className="about-chip">CREATIVE TECH</span>
+              </div>
+            </div>
           </div>
 
-          <div className="flex w-full overflow-hidden select-none py-2">
-            <motion.div
-              className="flex gap-6 whitespace-nowrap min-w-full"
-              animate={{ x: ['0%', '-50%'] }}
-              transition={{ repeat: Infinity, ease: 'linear', duration: 24 }}
-            >
-              {duplicatedSkills.map((skill, index) => (
-                <div
-                  key={`${skill}-${index}`}
-                  className="premium-card px-8 py-4 rounded-2xl flex items-center justify-center min-w-[160px] border border-white/10 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all"
-                >
-                  <span className="text-gray-200 font-medium text-sm tracking-wide">
-                    {skill}
-                  </span>
-                </div>
-              ))}
-            </motion.div>
+          {/* Mini quote */}
+          <div className="about-quote">
+            <span className="text-purple-400 text-2xl">“</span>
+            <p>
+              Always learning.
+              <br />
+              Always building.
+            </p>
           </div>
-        </section>
+        </div>
+
+        {/* RIGHT */}
+        <div className="relative flex items-center justify-center min-h-[430px]">
+
+          {/* Orbit rings */}
+          <div className="about-orbit orbit-large" />
+          <div className="about-orbit orbit-medium" />
+          <div className="about-orbit orbit-small" />
+
+          {/* Floating labels */}
+          <div className="about-float-card float-one">
+            <span className="text-purple-400">01</span>
+            <div>
+              <strong>BUILD</strong>
+              <small>Full Stack</small>
+            </div>
+          </div>
+
+          <div className="about-float-card float-two">
+            <span className="text-purple-400">02</span>
+            <div>
+              <strong>SECURE</strong>
+              <small>Cybersecurity</small>
+            </div>
+          </div>
+
+          <div className="about-float-card float-three">
+            <span className="text-purple-400">03</span>
+            <div>
+              <strong>EXPLORE</strong>
+              <small>Artificial Intelligence</small>
+            </div>
+          </div>
+
+          {/* Core */}
+          <div className="about-core">
+            <div className="core-glow" />
+
+            <div className="relative z-10 text-center">
+              <span className="text-[10px] tracking-[0.35em] text-gray-500 font-mono">
+                DIGITAL
+              </span>
+
+              <div className="text-7xl md:text-8xl font-black mt-1 about-v">
+                V
+              </div>
+
+              <span className="text-[10px] tracking-[0.3em] text-purple-300 font-mono">
+                VARSHA
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom metrics */}
+      <div className="about-metrics">
+
+        <div className="metric">
+          <span className="metric-number">01</span>
+          <div>
+            <strong>CURIOUS</strong>
+            <small>Always exploring</small>
+          </div>
+        </div>
+
+        <div className="metric">
+          <span className="metric-number">02</span>
+          <div>
+            <strong>SECURE</strong>
+            <small>Think like an attacker</small>
+          </div>
+        </div>
+
+        <div className="metric">
+          <span className="metric-number">03</span>
+          <div>
+            <strong>CREATE</strong>
+            <small>Turn ideas into products</small>
+          </div>
+        </div>
+
+        {portfolioData.hobbyWebsite && (
+          <a
+            href={portfolioData.hobbyWebsite}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="writing-portal"
+          >
+            <div>
+              <span>OFF THE SCREEN</span>
+              <strong>Tales Under a Thengu</strong>
+            </div>
+
+            <ExternalLink
+              size={17}
+              className="writing-arrow"
+            />
+          </a>
+        )}
+
+      </div>
+    </div>
+
+    {/* Bottom label */}
+    <div className="flex justify-between items-center mt-8 text-[10px] font-mono tracking-[0.2em] text-gray-600">
+      <span>ABOUT / IDENTITY / 2026</span>
+      <span>SCROLL TO EXPLORE ↓</span>
+    </div>
+
+  </div>
+</section>
+
+{/* Skills Section */}
+<section
+  id="skills"
+  className="relative py-24 overflow-hidden z-10"
+>
+  <div className="max-w-6xl mx-auto px-6">
+
+    {/* Heading */}
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+
+      <div>
+        <p className="text-xs font-mono tracking-[0.3em] uppercase text-purple-400 mb-4">
+          Skills
+        </p>
+
+        <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-white">
+          Things I
+          <span className="text-purple-400"> work with.</span>
+        </h2>
+      </div>
+
+      <p className="text-sm text-gray-500 max-w-sm leading-6">
+        Technologies I use to build, experiment, solve problems and
+        occasionally make things much harder than they need to be.
+      </p>
+    </div>
+
+    {/* Category labels */}
+    <div className="flex flex-wrap gap-2 mb-8">
+      <span className="skill-category active">DEVELOPMENT</span>
+      <span className="skill-category">DATABASE</span>
+      <span className="skill-category">CLOUD</span>
+      <span className="skill-category">SECURITY</span>
+      <span className="skill-category">TOOLS</span>
+    </div>
+
+  </div>
+
+  {/* Marquee */}
+  <div className="relative">
+
+    {/* Fade edges */}
+    <div className="skill-fade-left" />
+    <div className="skill-fade-right" />
+
+    <motion.div
+      className="flex gap-4 w-max"
+      animate={{ x: ["0%", "-50%"] }}
+      transition={{
+        repeat: Infinity,
+        ease: "linear",
+        duration: 30,
+      }}
+    >
+      {duplicatedSkills.map((skill, index) => (
+        <div
+          key={`${skill}-${index}`}
+          className="skill-item group"
+        >
+          <span className="skill-number">
+            {String((index % 9) + 1).padStart(2, "0")}
+          </span>
+
+          <span className="skill-name">
+            {skill}
+          </span>
+
+          <span className="skill-dot" />
+        </div>
+      ))}
+    </motion.div>
+
+  </div>
+
+  {/* Small bottom line */}
+  <div className="max-w-6xl mx-auto px-6 mt-12">
+    <div className="skill-bottom-line">
+      <span>LEARNING NEVER STOPS</span>
+      <span>MORE TO COME →</span>
+    </div>
+  </div>
+</section>
 
         {/* Experience Section */}
         <section id="experience" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
@@ -503,63 +612,385 @@ export default function App() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
-          <div className="flex items-center justify-center gap-3 mb-12">
-            <Code2 className="text-purple-400" size={28} />
-            <h2 className="text-3xl font-bold tracking-tight">Featured Projects</h2>
+        <section
+          id="projects"
+          className="max-w-5xl mx-auto px-4 py-24 z-10 relative"
+        >
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <p className="text-xs font-mono tracking-[0.3em] uppercase text-purple-400 mb-3 flex items-center gap-2">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                Selected Work
+              </p>
+
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+                Featured Projects
+              </h2>
+            </div>
+
+            <Code2
+              className="text-purple-400 hidden md:block"
+              size={28}
+            />
           </div>
-          <div className="grid gap-8">
-            {portfolioData.projects.map((p, idx) => (
-              <PremiumCard key={idx}>
-                <div className="flex justify-between items-start mb-3 flex-wrap gap-2">
-                  <h3 className="text-2xl font-bold tracking-wide text-white group-hover:text-purple-300 transition-colors">
-                    {p.title}
-                  </h3>
-                  <span className="text-xs font-mono text-gray-400 border border-white/10 px-3 py-1 rounded-full bg-white/5">
-                    {p.institution}
-                  </span>
-                </div>
-                <p className="text-gray-300 text-sm mb-6 leading-relaxed font-light">
-                  {p.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {p.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="text-xs font-mono bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 rounded-full text-purple-300"
-                    >
-                      {tag}
+
+          <div className="grid gap-6">
+            {portfolioData.projects.map((p, idx) => {
+              const lowerTitle = p.title?.toLowerCase() || "";
+
+              // Resolve correct live links dynamically
+              let projectLink = p.link;
+              if (lowerTitle.includes("microcosm")) {
+                projectLink = "https://microcosm2025.github.io/Website/";
+              } else if (lowerTitle.includes("whimsical") || lowerTitle.includes("angular")) {
+                projectLink = "https://varshajohnson.vercel.app/";
+              }
+
+              const ProjectContent = (
+                <>
+                  {/* Project number */}
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-xs font-mono text-purple-400">
+                      PROJECT / {String(idx + 1).padStart(2, "0")}
                     </span>
-                  ))}
+
+                    {p.institution && (
+                      <span className="text-xs font-mono text-gray-500 border border-white/10 px-3 py-1 rounded-full bg-white/[0.02]">
+                        {p.institution}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title & Link Icon */}
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
+                      {p.title}
+                    </h3>
+
+                    {projectLink && (
+                      <ExternalLink
+                        size={19}
+                        className="text-gray-500 group-hover:text-purple-400 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 flex-shrink-0"
+                      />
+                    )}
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-gray-400 text-sm md:text-base mb-7 leading-7 max-w-3xl">
+                    {p.description}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {p.tags?.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="text-xs font-mono px-3 py-1.5 rounded-full text-gray-300 bg-white/[0.03] border border-white/[0.08] group-hover:border-purple-500/30 group-hover:text-purple-300 transition-all duration-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* View Project Demo Bar */}
+                  {projectLink && (
+                    <div className="mt-8 pt-5 border-t border-white/[0.06] flex items-center justify-between">
+                      <span className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase flex items-center gap-2">
+                        <span className="w-1 h-1 rounded-full bg-purple-400" />
+                        Live Demo
+                      </span>
+
+                      <span className="text-xs text-gray-400 group-hover:text-white transition-colors duration-200 flex items-center gap-1">
+                        Explore <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                      </span>
+                    </div>
+                  )}
+                </>
+              );
+
+              return projectLink ? (
+                <a
+                  key={idx}
+                  href={projectLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="project-card group block cursor-pointer transition-transform duration-300 active:scale-[0.99]"
+                >
+                  {ProjectContent}
+                </a>
+              ) : (
+                <div
+                  key={idx}
+                  className="project-card group"
+                >
+                  {ProjectContent}
                 </div>
-              </PremiumCard>
-            ))}
+              );
+            })}
           </div>
         </section>
 
         {/* Certifications Section */}
-        <section id="certifications" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
-          <h2 className="text-3xl font-bold text-center mb-12 tracking-tight">
-            Certifications & Milestones
-          </h2>
-          <PremiumCard>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {portfolioData.certifications.map((cert, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{ scale: 1.02, backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-                  className="flex items-center gap-3.5 p-4 rounded-2xl bg-white/5 border border-white/10 transition-all cursor-default group"
-                >
-                  <Award
-                    className="text-purple-400 shrink-0 group-hover:scale-110 transition-transform"
-                    size={22}
-                  />
-                  <span className="text-sm text-gray-200 font-medium">{cert}</span>
-                </motion.div>
-              ))}
-            </div>
-          </PremiumCard>
-        </section>
+        {(() => {
+          const [selectedCert, setSelectedCert] = useState(null);
+
+          const certificationsData = [
+            {
+              title: "One Million Prompters Initiative",
+              issuer: "Dubai Future Foundation",
+              date: "Dubai Universal Blueprint for AI",
+              preview: "/certificates/dubai-ai-preview.jpg", // Screenshot 2026-09-20 182453.jpg
+              file: "/certificates/Dubai-Ai.pdf",
+              type: "pdf",
+              credentialUrl: "",
+              tags: ["Prompt Engineering", "GenAI", "AI Systems"]
+            },
+            {
+              title: "HTML5 Application Development",
+              issuer: "Information Technology Specialist • Pearson VUE",
+              date: "Jan 2026",
+              preview: "/certificates/html5-preview.jpg", // Screenshot 2026-09-20 182509.jpg
+              file: "/certificates/HTML5.pdf",
+              type: "pdf",
+              credentialUrl: "https://verify.certiport.com",
+              tags: ["HTML5", "CSS3", "JavaScript APIs", "Web Apps"]
+            },
+            {
+              title: "AWS Academy Graduate - AWS Academy Cloud Foundations",
+              issuer: "AWS Academy",
+              date: "Sept 2024",
+              preview: "/certificates/Aws.jpeg",
+              file: "/certificates/Aws.jpeg",
+              type: "image",
+              credentialUrl: "https://www.credly.com/go/BkBIYWkb",
+              tags: ["Cloud Architecture", "AWS Infrastructure"]
+            },
+            {
+              title: "Cybersecurity Awareness: Key Security Terms & Concepts",
+              issuer: "Infosys Springboard",
+              date: "Aug 2024",
+              preview: "/certificates/Cybersecuity.jpeg",
+              file: "/certificates/Cybersecuity.jpeg",
+              type: "image",
+              credentialUrl: "https://verify.onwingspan.com",
+              tags: ["Cybersecurity", "Network Security", "Threat Modeling"]
+            },
+            {
+              title: "Cloud Computing (Elite)",
+              issuer: "NPTEL • IIT Kharagpur",
+              date: "Jan - Apr 2026",
+              preview: "/certificates/cloud-computing-preview.png", // Screenshot 2026-09-20 182422.png
+              file: "/certificates/CloudComputing.pdf",
+              type: "pdf",
+              credentialUrl: "https://nptel.ac.in/noc/",
+              tags: ["Distributed Systems", "Cloud Models", "Virtualization"]
+            },
+            {
+              title: "Data Base Management System (Elite)",
+              issuer: "NPTEL • IIT Kharagpur",
+              date: "Jul - Sep 2024",
+              preview: "/certificates/dbms-preview.png", // Screenshot 2026-09-20 182439.png
+              file: "/certificates/Data Base Management System.pdf",
+              type: "pdf",
+              credentialUrl: "https://nptel.ac.in/noc/",
+              tags: ["DBMS", "Relational Databases", "SQL", "Indexing"]
+            },
+            {
+              title: "The Joy of Computing using Python (Elite)",
+              issuer: "NPTEL • IIT Madras",
+              date: "Jan - Apr 2024",
+              preview: "/certificates/python-preview.png", // Screenshot 2026-09-20 182524.png
+              file: "/certificates/The Joy of Computing using Python.pdf",
+              type: "pdf",
+              credentialUrl: "https://nptel.ac.in/noc/",
+              tags: ["Python", "Algorithms", "Data Structures"]
+            }
+          ];
+
+          return (
+            <section id="certifications" className="max-w-5xl mx-auto px-4 py-24 z-10 relative">
+              {/* Header */}
+              <div className="flex items-end justify-between mb-12">
+                <div>
+                  <p className="text-xs font-mono tracking-[0.3em] uppercase text-purple-400 mb-3 flex items-center gap-2">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                    Verified Credentials
+                  </p>
+                  <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+                    Certifications & Milestones
+                  </h2>
+                </div>
+                <div className="hidden md:flex items-center gap-2 p-3 rounded-xl border border-white/5 bg-white/[0.02]">
+                  <Award className="text-purple-400" size={24} />
+                </div>
+              </div>
+
+              {/* Cards Grid */}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {certificationsData.map((cert, idx) => (
+                  <motion.div
+                    key={idx}
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    onClick={() => setSelectedCert(cert)}
+                    className="group relative cursor-pointer rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02] backdrop-blur-md hover:border-purple-500/40 hover:bg-white/[0.035] hover:shadow-[0_15px_35px_rgba(168,85,247,0.12)] flex flex-col justify-between transition-all duration-300"
+                  >
+                    <div>
+                      {/* Visual Card Image Preview */}
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/50 border-b border-white/[0.06]">
+                        <img
+                          src={cert.preview}
+                          alt={cert.title}
+                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                        />
+
+                        {/* Tag Pill for PDF/IMG */}
+                        <span className="absolute top-2.5 right-2.5 text-[9px] font-mono px-2 py-0.5 rounded bg-black/70 border border-white/10 text-purple-300 backdrop-blur-sm">
+                          {cert.type.toUpperCase()}
+                        </span>
+
+                        {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+                          <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-600/90 text-white backdrop-blur-md flex items-center gap-1.5 shadow-lg">
+                            <Eye size={13} /> View Certificate
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Content Body */}
+                      <div className="p-5">
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-semibold truncate">
+                            {cert.issuer}
+                          </span>
+                          <span className="text-[10px] font-mono text-gray-500 flex-shrink-0">
+                            {cert.date}
+                          </span>
+                        </div>
+
+                        <h3 className="text-base font-semibold text-white group-hover:text-purple-300 transition-colors line-clamp-2 mb-3">
+                          {cert.title}
+                        </h3>
+
+                        <div className="flex flex-wrap gap-1.5">
+                          {cert.tags.map((t, i) => (
+                            <span
+                              key={i}
+                              className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/[0.03] border border-white/[0.07] text-gray-400 group-hover:border-purple-500/20 group-hover:text-purple-300/80 transition-colors"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="px-5 pb-4 pt-0">
+                      <div className="pt-3 border-t border-white/[0.04] flex items-center justify-between text-[11px] text-gray-400 group-hover:text-white transition-colors">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-gray-600">
+                          Credential
+                        </span>
+                        <span>Click to Preview →</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* In-Page Certificate Lightbox Modal */}
+              <AnimatePresence>
+                {selectedCert && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 overflow-hidden">
+                    {/* Backdrop */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setSelectedCert(null)}
+                      className="absolute inset-0 bg-black/85 backdrop-blur-md"
+                    />
+
+                    {/* Modal Window */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                      transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                      className="relative z-10 w-full max-w-4xl h-[88vh] flex flex-col rounded-2xl border border-white/15 bg-[#0a0a0e] shadow-[0_25px_80px_rgba(0,0,0,0.8)] overflow-hidden"
+                    >
+                      {/* Top Bar */}
+                      <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 size={16} className="text-purple-400 shrink-0" />
+                          <h4 className="text-sm md:text-base font-semibold text-white truncate max-w-[280px] sm:max-w-md">
+                            {selectedCert.title}
+                          </h4>
+                        </div>
+                        <button
+                          onClick={() => setSelectedCert(null)}
+                          className="p-1.5 rounded-lg border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <X size={18} />
+                        </button>
+                      </div>
+
+                      {/* Modal Content (Image vs PDF Viewer) */}
+                      <div className="flex-1 w-full overflow-hidden p-3 flex items-center justify-center bg-black/60">
+                        {selectedCert.type === "image" ? (
+                          <img
+                            src={selectedCert.file}
+                            alt={selectedCert.title}
+                            className="max-h-full w-auto max-w-full rounded-lg shadow-2xl object-contain border border-white/10"
+                          />
+                        ) : (
+                          <object
+                            data={`${selectedCert.file}#toolbar=0&navpanes=0&scrollbar=0`}
+                            type="application/pdf"
+                            className="w-full h-full rounded-lg border border-white/10 bg-white"
+                          >
+                            <iframe
+                              src={`${selectedCert.file}#toolbar=0`}
+                              title={selectedCert.title}
+                              className="w-full h-full rounded-lg border-0"
+                            />
+                          </object>
+                        )}
+                      </div>
+
+                      {/* Footer Info & Verification Action */}
+                      <div className="px-6 py-4 border-t border-white/10 bg-[#07070a] flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <p className="text-xs font-mono text-purple-400">{selectedCert.issuer}</p>
+                          <p className="text-xs text-gray-500 font-mono mt-0.5">Issued: {selectedCert.date}</p>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          {selectedCert.credentialUrl && (
+                            <a
+                              href={selectedCert.credentialUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-4 py-2 rounded-xl text-xs font-mono font-medium text-white bg-purple-600 hover:bg-purple-500 transition-colors flex items-center gap-1.5 shadow-lg shadow-purple-600/20"
+                            >
+                              Verify Credential <ExternalLink size={13} />
+                            </a>
+                          )}
+                          <button
+                            onClick={() => setSelectedCert(null)}
+                            className="px-4 py-2 rounded-xl text-xs font-mono text-gray-300 border border-white/10 hover:bg-white/5 transition-colors"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                )}
+              </AnimatePresence>
+            </section>
+          );
+        })()}
+
 
         {/* Contact Section */}
         <section id="contact" className="max-w-2xl mx-auto px-4 py-16 text-center z-10 relative">
