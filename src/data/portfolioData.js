@@ -51,7 +51,16 @@ export const portfolioData = {
         title: "Microbiology Association Website",
         institution: "St. Joseph's University",
         tags: ["HTML", "CSS", "JavaScript", "Bootstrap", "Git"],
-        description: "Built a responsive web application featuring front-end and back-end integration, optimized mobile UI/UX, and dynamic content delivery."
+        description: "Built a responsive web application featuring front-end and back-end integration, optimized mobile UI/UX, and dynamic content delivery.",
+        link: "https://microcosm2025.github.io/Website/"
+      },
+
+      {
+        title: "Whimsical Angular Portfolio",
+        institution: "Personal Project",
+        description: "An expressive, interactive portfolio built with Angular showcasing fluid UI/UX experiments and playful dynamic components.",
+        tags: ["Angular", "TypeScript", "Tailwind CSS", "Vercel"],
+        link: "https://varshajohnson.vercel.app/"
       }
     ],
   

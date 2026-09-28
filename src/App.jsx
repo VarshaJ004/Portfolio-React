@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-
-// UI icons
-import {
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { 
+  Code2, 
+  Award, 
+  X, 
+  Eye, 
+  CheckCircle2, 
+  ExternalLink, 
+  ArrowUpRight,
   Mail,
   User,
-  ExternalLink,
   Sparkles,
-  Briefcase,
-  Code2,
-  Award,
-  ArrowUpRight
+  Briefcase
 } from 'lucide-react';
 
 import Navbar from './components/Navbar';
@@ -611,140 +612,385 @@ export default function App() {
         </section>
 
         {/* Projects Section */}
-<section
-  id="projects"
-  className="max-w-5xl mx-auto px-4 py-24 z-10 relative"
->
-  <div className="flex items-end justify-between mb-12">
-    <div>
-      <p className="text-xs font-mono tracking-[0.3em] uppercase text-purple-400 mb-3">
-        Selected Work
-      </p>
+        <section
+          id="projects"
+          className="max-w-5xl mx-auto px-4 py-24 z-10 relative"
+        >
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <p className="text-xs font-mono tracking-[0.3em] uppercase text-purple-400 mb-3 flex items-center gap-2">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                Selected Work
+              </p>
 
-      <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-        Featured Projects
-      </h2>
-    </div>
-
-    <Code2
-      className="text-purple-400 hidden md:block"
-      size={28}
-    />
-  </div>
-
-  <div className="grid gap-6">
-    {portfolioData.projects.map((p, idx) => {
-
-      // Microcosm website
-      const projectLink =
-        p.title?.toLowerCase().includes("microcosm")
-          ? "https://microcosm2025.github.io/Website/"
-          : p.link;
-
-      const ProjectContent = (
-        <>
-          {/* Project number */}
-          <div className="flex items-center justify-between mb-6">
-            <span className="text-xs font-mono text-purple-400">
-              PROJECT / {String(idx + 1).padStart(2, "0")}
-            </span>
-
-            <span className="text-xs font-mono text-gray-500 border border-white/10 px-3 py-1 rounded-full">
-              {p.institution}
-            </span>
-          </div>
-
-          {/* Title */}
-          <div className="flex items-center gap-3 mb-4">
-            <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-purple-300 transition-colors">
-              {p.title}
-            </h3>
-
-            {projectLink && (
-              <ExternalLink
-                size={18}
-                className="text-gray-600 group-hover:text-purple-400 transition-all group-hover:translate-x-1 group-hover:-translate-y-1"
-              />
-            )}
-          </div>
-
-          {/* Description */}
-          <p className="text-gray-400 text-sm md:text-base mb-7 leading-7 max-w-3xl">
-            {p.description}
-          </p>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {p.tags.map((tag, i) => (
-              <span
-                key={i}
-                className="text-xs font-mono px-3 py-1.5 rounded-full text-gray-300 bg-white/[0.03] border border-white/[0.08] group-hover:border-purple-500/30 group-hover:text-purple-300 transition-all"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          {/* View Project */}
-          {projectLink && (
-            <div className="mt-8 pt-5 border-t border-white/[0.06] flex items-center justify-between">
-              <span className="text-[10px] font-mono tracking-[0.2em] text-gray-600 uppercase">
-                View Project
-              </span>
-
-              <span className="text-xs text-gray-400 group-hover:text-white transition-colors">
-                Explore →
-              </span>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+                Featured Projects
+              </h2>
             </div>
-          )}
-        </>
-      );
 
-      return projectLink ? (
-        <a
-          key={idx}
-          href={projectLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="project-card group block"
-        >
-          {ProjectContent}
-        </a>
-      ) : (
-        <div
-          key={idx}
-          className="project-card group"
-        >
-          {ProjectContent}
-        </div>
-      );
-    })}
-  </div>
-</section>
+            <Code2
+              className="text-purple-400 hidden md:block"
+              size={28}
+            />
+          </div>
+
+          <div className="grid gap-6">
+            {portfolioData.projects.map((p, idx) => {
+              const lowerTitle = p.title?.toLowerCase() || "";
+
+              // Resolve correct live links dynamically
+              let projectLink = p.link;
+              if (lowerTitle.includes("microcosm")) {
+                projectLink = "https://microcosm2025.github.io/Website/";
+              } else if (lowerTitle.includes("whimsical") || lowerTitle.includes("angular")) {
+                projectLink = "https://varshajohnson.vercel.app/";
+              }
+
+              const ProjectContent = (
+                <>
+                  {/* Project number */}
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-xs font-mono text-purple-400">
+                      PROJECT / {String(idx + 1).padStart(2, "0")}
+                    </span>
+
+                    {p.institution && (
+                      <span className="text-xs font-mono text-gray-500 border border-white/10 px-3 py-1 rounded-full bg-white/[0.02]">
+                        {p.institution}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title & Link Icon */}
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
+                      {p.title}
+                    </h3>
+
+                    {projectLink && (
+                      <ExternalLink
+                        size={19}
+                        className="text-gray-500 group-hover:text-purple-400 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 flex-shrink-0"
+                      />
+                    )}
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-gray-400 text-sm md:text-base mb-7 leading-7 max-w-3xl">
+                    {p.description}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {p.tags?.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="text-xs font-mono px-3 py-1.5 rounded-full text-gray-300 bg-white/[0.03] border border-white/[0.08] group-hover:border-purple-500/30 group-hover:text-purple-300 transition-all duration-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* View Project Demo Bar */}
+                  {projectLink && (
+                    <div className="mt-8 pt-5 border-t border-white/[0.06] flex items-center justify-between">
+                      <span className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase flex items-center gap-2">
+                        <span className="w-1 h-1 rounded-full bg-purple-400" />
+                        Live Demo
+                      </span>
+
+                      <span className="text-xs text-gray-400 group-hover:text-white transition-colors duration-200 flex items-center gap-1">
+                        Explore <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                      </span>
+                    </div>
+                  )}
+                </>
+              );
+
+              return projectLink ? (
+                <a
+                  key={idx}
+                  href={projectLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="project-card group block cursor-pointer transition-transform duration-300 active:scale-[0.99]"
+                >
+                  {ProjectContent}
+                </a>
+              ) : (
+                <div
+                  key={idx}
+                  className="project-card group"
+                >
+                  {ProjectContent}
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
         {/* Certifications Section */}
-        <section id="certifications" className="max-w-4xl mx-auto px-4 py-16 z-10 relative">
-          <h2 className="text-3xl font-bold text-center mb-12 tracking-tight">
-            Certifications & Milestones
-          </h2>
-          <PremiumCard>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {portfolioData.certifications.map((cert, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{ scale: 1.02, backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
-                  className="flex items-center gap-3.5 p-4 rounded-2xl bg-white/5 border border-white/10 transition-all cursor-default group"
-                >
-                  <Award
-                    className="text-purple-400 shrink-0 group-hover:scale-110 transition-transform"
-                    size={22}
-                  />
-                  <span className="text-sm text-gray-200 font-medium">{cert}</span>
-                </motion.div>
-              ))}
-            </div>
-          </PremiumCard>
-        </section>
+        {(() => {
+          const [selectedCert, setSelectedCert] = useState(null);
+
+          const certificationsData = [
+            {
+              title: "One Million Prompters Initiative",
+              issuer: "Dubai Future Foundation",
+              date: "Dubai Universal Blueprint for AI",
+              preview: "/certificates/dubai-ai-preview.jpg", // Screenshot 2026-09-20 182453.jpg
+              file: "/certificates/Dubai-Ai.pdf",
+              type: "pdf",
+              credentialUrl: "",
+              tags: ["Prompt Engineering", "GenAI", "AI Systems"]
+            },
+            {
+              title: "HTML5 Application Development",
+              issuer: "Information Technology Specialist • Pearson VUE",
+              date: "Jan 2026",
+              preview: "/certificates/html5-preview.jpg", // Screenshot 2026-09-20 182509.jpg
+              file: "/certificates/HTML5.pdf",
+              type: "pdf",
+              credentialUrl: "https://verify.certiport.com",
+              tags: ["HTML5", "CSS3", "JavaScript APIs", "Web Apps"]
+            },
+            {
+              title: "AWS Academy Graduate - AWS Academy Cloud Foundations",
+              issuer: "AWS Academy",
+              date: "Sept 2024",
+              preview: "/certificates/Aws.jpeg",
+              file: "/certificates/Aws.jpeg",
+              type: "image",
+              credentialUrl: "https://www.credly.com/go/BkBIYWkb",
+              tags: ["Cloud Architecture", "AWS Infrastructure"]
+            },
+            {
+              title: "Cybersecurity Awareness: Key Security Terms & Concepts",
+              issuer: "Infosys Springboard",
+              date: "Aug 2024",
+              preview: "/certificates/Cybersecuity.jpeg",
+              file: "/certificates/Cybersecuity.jpeg",
+              type: "image",
+              credentialUrl: "https://verify.onwingspan.com",
+              tags: ["Cybersecurity", "Network Security", "Threat Modeling"]
+            },
+            {
+              title: "Cloud Computing (Elite)",
+              issuer: "NPTEL • IIT Kharagpur",
+              date: "Jan - Apr 2026",
+              preview: "/certificates/cloud-computing-preview.png", // Screenshot 2026-09-20 182422.png
+              file: "/certificates/CloudComputing.pdf",
+              type: "pdf",
+              credentialUrl: "https://nptel.ac.in/noc/",
+              tags: ["Distributed Systems", "Cloud Models", "Virtualization"]
+            },
+            {
+              title: "Data Base Management System (Elite)",
+              issuer: "NPTEL • IIT Kharagpur",
+              date: "Jul - Sep 2024",
+              preview: "/certificates/dbms-preview.png", // Screenshot 2026-09-20 182439.png
+              file: "/certificates/Data Base Management System.pdf",
+              type: "pdf",
+              credentialUrl: "https://nptel.ac.in/noc/",
+              tags: ["DBMS", "Relational Databases", "SQL", "Indexing"]
+            },
+            {
+              title: "The Joy of Computing using Python (Elite)",
+              issuer: "NPTEL • IIT Madras",
+              date: "Jan - Apr 2024",
+              preview: "/certificates/python-preview.png", // Screenshot 2026-09-20 182524.png
+              file: "/certificates/The Joy of Computing using Python.pdf",
+              type: "pdf",
+              credentialUrl: "https://nptel.ac.in/noc/",
+              tags: ["Python", "Algorithms", "Data Structures"]
+            }
+          ];
+
+          return (
+            <section id="certifications" className="max-w-5xl mx-auto px-4 py-24 z-10 relative">
+              {/* Header */}
+              <div className="flex items-end justify-between mb-12">
+                <div>
+                  <p className="text-xs font-mono tracking-[0.3em] uppercase text-purple-400 mb-3 flex items-center gap-2">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                    Verified Credentials
+                  </p>
+                  <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+                    Certifications & Milestones
+                  </h2>
+                </div>
+                <div className="hidden md:flex items-center gap-2 p-3 rounded-xl border border-white/5 bg-white/[0.02]">
+                  <Award className="text-purple-400" size={24} />
+                </div>
+              </div>
+
+              {/* Cards Grid */}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {certificationsData.map((cert, idx) => (
+                  <motion.div
+                    key={idx}
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    onClick={() => setSelectedCert(cert)}
+                    className="group relative cursor-pointer rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02] backdrop-blur-md hover:border-purple-500/40 hover:bg-white/[0.035] hover:shadow-[0_15px_35px_rgba(168,85,247,0.12)] flex flex-col justify-between transition-all duration-300"
+                  >
+                    <div>
+                      {/* Visual Card Image Preview */}
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/50 border-b border-white/[0.06]">
+                        <img
+                          src={cert.preview}
+                          alt={cert.title}
+                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                        />
+
+                        {/* Tag Pill for PDF/IMG */}
+                        <span className="absolute top-2.5 right-2.5 text-[9px] font-mono px-2 py-0.5 rounded bg-black/70 border border-white/10 text-purple-300 backdrop-blur-sm">
+                          {cert.type.toUpperCase()}
+                        </span>
+
+                        {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+                          <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-600/90 text-white backdrop-blur-md flex items-center gap-1.5 shadow-lg">
+                            <Eye size={13} /> View Certificate
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Content Body */}
+                      <div className="p-5">
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-semibold truncate">
+                            {cert.issuer}
+                          </span>
+                          <span className="text-[10px] font-mono text-gray-500 flex-shrink-0">
+                            {cert.date}
+                          </span>
+                        </div>
+
+                        <h3 className="text-base font-semibold text-white group-hover:text-purple-300 transition-colors line-clamp-2 mb-3">
+                          {cert.title}
+                        </h3>
+
+                        <div className="flex flex-wrap gap-1.5">
+                          {cert.tags.map((t, i) => (
+                            <span
+                              key={i}
+                              className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/[0.03] border border-white/[0.07] text-gray-400 group-hover:border-purple-500/20 group-hover:text-purple-300/80 transition-colors"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="px-5 pb-4 pt-0">
+                      <div className="pt-3 border-t border-white/[0.04] flex items-center justify-between text-[11px] text-gray-400 group-hover:text-white transition-colors">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-gray-600">
+                          Credential
+                        </span>
+                        <span>Click to Preview →</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* In-Page Certificate Lightbox Modal */}
+              <AnimatePresence>
+                {selectedCert && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 overflow-hidden">
+                    {/* Backdrop */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setSelectedCert(null)}
+                      className="absolute inset-0 bg-black/85 backdrop-blur-md"
+                    />
+
+                    {/* Modal Window */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                      transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                      className="relative z-10 w-full max-w-4xl h-[88vh] flex flex-col rounded-2xl border border-white/15 bg-[#0a0a0e] shadow-[0_25px_80px_rgba(0,0,0,0.8)] overflow-hidden"
+                    >
+                      {/* Top Bar */}
+                      <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 size={16} className="text-purple-400 shrink-0" />
+                          <h4 className="text-sm md:text-base font-semibold text-white truncate max-w-[280px] sm:max-w-md">
+                            {selectedCert.title}
+                          </h4>
+                        </div>
+                        <button
+                          onClick={() => setSelectedCert(null)}
+                          className="p-1.5 rounded-lg border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          <X size={18} />
+                        </button>
+                      </div>
+
+                      {/* Modal Content (Image vs PDF Viewer) */}
+                      <div className="flex-1 w-full overflow-hidden p-3 flex items-center justify-center bg-black/60">
+                        {selectedCert.type === "image" ? (
+                          <img
+                            src={selectedCert.file}
+                            alt={selectedCert.title}
+                            className="max-h-full w-auto max-w-full rounded-lg shadow-2xl object-contain border border-white/10"
+                          />
+                        ) : (
+                          <object
+                            data={`${selectedCert.file}#toolbar=0&navpanes=0&scrollbar=0`}
+                            type="application/pdf"
+                            className="w-full h-full rounded-lg border border-white/10 bg-white"
+                          >
+                            <iframe
+                              src={`${selectedCert.file}#toolbar=0`}
+                              title={selectedCert.title}
+                              className="w-full h-full rounded-lg border-0"
+                            />
+                          </object>
+                        )}
+                      </div>
+
+                      {/* Footer Info & Verification Action */}
+                      <div className="px-6 py-4 border-t border-white/10 bg-[#07070a] flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <p className="text-xs font-mono text-purple-400">{selectedCert.issuer}</p>
+                          <p className="text-xs text-gray-500 font-mono mt-0.5">Issued: {selectedCert.date}</p>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          {selectedCert.credentialUrl && (
+                            <a
+                              href={selectedCert.credentialUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-4 py-2 rounded-xl text-xs font-mono font-medium text-white bg-purple-600 hover:bg-purple-500 transition-colors flex items-center gap-1.5 shadow-lg shadow-purple-600/20"
+                            >
+                              Verify Credential <ExternalLink size={13} />
+                            </a>
+                          )}
+                          <button
+                            onClick={() => setSelectedCert(null)}
+                            className="px-4 py-2 rounded-xl text-xs font-mono text-gray-300 border border-white/10 hover:bg-white/5 transition-colors"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                )}
+              </AnimatePresence>
+            </section>
+          );
+        })()}
+
 
         {/* Contact Section */}
         <section id="contact" className="max-w-2xl mx-auto px-4 py-16 text-center z-10 relative">
